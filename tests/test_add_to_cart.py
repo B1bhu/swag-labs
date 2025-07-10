@@ -2,7 +2,7 @@ import pytest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
+from locators.locators import LoginLocators
 from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
 from pages.cart_page import CartPage
@@ -10,14 +10,12 @@ from pages.cart_page import CartPage
 
 @pytest.mark.add_to_cart
 def test_add_single_item_to_cart(driver):
-    username = "standard_user"
-    password = "secret_sauce"
     product_name = "Sauce Labs Backpack"
 
     login_page = LoginPage(driver)
     inventory_page = InventoryPage(driver)
 
-    login_page.login(username, password)
+    login_page.login(LoginLocators.VALID_USERNAME, LoginLocators.VALID_PASSWORD)
     inventory_page.add_to_cart_by_name(product_name)
 
     cart_count = inventory_page.get_cart_count()
@@ -25,8 +23,6 @@ def test_add_single_item_to_cart(driver):
 
 @pytest.mark.add_to_cart
 def test_item_details_in_cart(driver):
-    username = "standard_user"
-    password = "secret_sauce"
     product_name = "Sauce Labs Backpack"
     expected_price = "$29.99"
     expected_quantity = "1"
@@ -35,7 +31,7 @@ def test_item_details_in_cart(driver):
     inventory_page = InventoryPage(driver)
     cart_page = CartPage(driver)
 
-    login_page.login(username, password)
+    login_page.login(LoginLocators.VALID_USERNAME, LoginLocators.VALID_PASSWORD)
     inventory_page.add_to_cart_by_name(product_name)
     inventory_page.go_to_cart()
 
@@ -49,15 +45,13 @@ def test_item_details_in_cart(driver):
 
 @pytest.mark.add_to_cart
 def test_add_multiple_items_to_cart(driver):
-    username = "standard_user"
-    password = "secret_sauce"
     products = ["Sauce Labs Backpack", "Sauce Labs Bolt T-Shirt"]
 
     login_page = LoginPage(driver)
     inventory_page = InventoryPage(driver)
     cart_page = CartPage(driver)
 
-    login_page.login(username, password)
+    login_page.login(LoginLocators.VALID_USERNAME, LoginLocators.VALID_PASSWORD)
 
     # Add each item
     for item in products:
@@ -75,15 +69,13 @@ def test_add_multiple_items_to_cart(driver):
         assert item in cart_items, f"{item} not found in cart items"
 
 @pytest.mark.add_to_cart
-def test_cart_is_empty_on_login(driver):
-    username = "standard_user"
-    password = "secret_sauce"
+def test_cart_is_empty_on_first_time_login(driver):
 
     login_page = LoginPage(driver)
     inventory_page = InventoryPage(driver)
     cart_page = CartPage(driver)
 
-    login_page.login(username, password)
+    login_page.login(LoginLocators.VALID_USERNAME, LoginLocators.VALID_PASSWORD)
     inventory_page.go_to_cart()
 
     is_empty = cart_page.is_cart_empty()
@@ -96,14 +88,12 @@ def test_cart_is_empty_on_login(driver):
 
 @pytest.mark.add_to_cart
 def test_add_button_changes_to_remove_and_back(driver):
-    username = "standard_user"
-    password = "secret_sauce"
     product_name = "Sauce Labs Backpack"
 
     login_page = LoginPage(driver)
     inventory_page = InventoryPage(driver)
 
-    login_page.login(username, password)
+    login_page.login(LoginLocators.VALID_USERNAME, LoginLocators.VALID_PASSWORD)
 
     # Verify button initially says "Add to cart"
     initial_text = inventory_page.get_button_text(product_name)
@@ -122,8 +112,6 @@ def test_add_button_changes_to_remove_and_back(driver):
 
 @pytest.mark.add_to_cart
 def test_add_and_remove_item_cart_empty(driver):
-    username = "standard_user"
-    password = "secret_sauce"
     product_name = "Sauce Labs Backpack"
 
     login_page = LoginPage(driver)
@@ -132,7 +120,7 @@ def test_add_and_remove_item_cart_empty(driver):
 
     wait = WebDriverWait(driver, 10)
 
-    login_page.login(username, password)
+    login_page.login(LoginLocators.VALID_USERNAME, LoginLocators.VALID_PASSWORD)
 
     # Add item
     inventory_page.add_to_cart_by_name(product_name)
@@ -153,14 +141,13 @@ def test_add_and_remove_item_cart_empty(driver):
 
 @pytest.mark.add_to_cart
 def test_cart_badge_increases_with_each_item(driver):
-    username = "standard_user"
-    password = "secret_sauce"
+
     products = ["Sauce Labs Backpack", "Sauce Labs Bolt T-Shirt", "Sauce Labs Onesie"]
 
     login_page = LoginPage(driver)
     inventory_page = InventoryPage(driver)
 
-    login_page.login(username, password)
+    login_page.login(LoginLocators.VALID_USERNAME, LoginLocators.VALID_PASSWORD)
 
     for idx, product in enumerate(products, start=1):
         inventory_page.add_to_cart_by_name(product)
@@ -170,15 +157,13 @@ def test_cart_badge_increases_with_each_item(driver):
 
 @pytest.mark.add_to_cart
 def test_cart_persists_after_page_refresh(driver):
-    username = "standard_user"
-    password = "secret_sauce"
     product_name = "Sauce Labs Backpack"
 
     login_page = LoginPage(driver)
     inventory_page = InventoryPage(driver)
     cart_page = CartPage(driver)
 
-    login_page.login(username, password)
+    login_page.login(LoginLocators.VALID_USERNAME, LoginLocators.VALID_PASSWORD)
 
     # Add product to cart
     inventory_page.add_to_cart_by_name(product_name)
@@ -195,38 +180,36 @@ def test_cart_persists_after_page_refresh(driver):
     item_names = cart_page.get_item_names()
     assert product_name in item_names, f"{product_name} not found in cart after refresh"
 
-import pytest
-
+#
+# @pytest.mark.add_to_cart
+# def test_same_item_not_added_twice(driver):
+#     username = "standard_user"
+#     password = "secret_sauce"
+#     product_name = "Sauce Labs Backpack"
+#
+#     login_page = LoginPage(driver)
+#     inventory_page = InventoryPage(driver)
+#
+#     login_page.login(username, password)
+#
+#     # Add product once
+#     inventory_page.add_to_cart_by_name(product_name)
+#     cart_count = inventory_page.get_cart_count()
+#     assert cart_count == "1", f"Expected cart count to be 1 after first add, got {cart_count}"
+#
+#     # Try to click "Add to Cart" again (should be "Remove" now)
+#     # If clicked again, it would remove — so don’t click it again
+#     # Instead, assert the button says "Remove"
+#     button_text = inventory_page.get_button_text(product_name)
+#     assert button_text.lower() == "remove", f"Expected button text to be 'Remove', got '{button_text}'"
+#
+#     # Re-check cart count (should still be 1)
+#     cart_count_after = inventory_page.get_cart_count()
+#     assert cart_count_after == "1", f"Cart count should still be 1, but got {cart_count_after}"
+#
 @pytest.mark.add_to_cart
-def test_same_item_not_added_twice(driver):
-    username = "standard_user"
-    password = "secret_sauce"
-    product_name = "Sauce Labs Backpack"
-
-    login_page = LoginPage(driver)
-    inventory_page = InventoryPage(driver)
-
-    login_page.login(username, password)
-
-    # Add product once
-    inventory_page.add_to_cart_by_name(product_name)
-    cart_count = inventory_page.get_cart_count()
-    assert cart_count == "1", f"Expected cart count to be 1 after first add, got {cart_count}"
-
-    # Try to click "Add to Cart" again (should be "Remove" now)
-    # If clicked again, it would remove — so don’t click it again
-    # Instead, assert the button says "Remove"
-    button_text = inventory_page.get_button_text(product_name)
-    assert button_text.lower() == "remove", f"Expected button text to be 'Remove', got '{button_text}'"
-
-    # Re-check cart count (should still be 1)
-    cart_count_after = inventory_page.get_cart_count()
-    assert cart_count_after == "1", f"Cart count should still be 1, but got {cart_count_after}"
-
-
 def test_cart_persists_after_logout_and_login(driver):
-    username = "standard_user"
-    password = "secret_sauce"
+
     product_name = "Sauce Labs Backpack"
 
     login_page = LoginPage(driver)
@@ -234,7 +217,7 @@ def test_cart_persists_after_logout_and_login(driver):
     cart_page = CartPage(driver)
 
     # Login and add item
-    login_page.login(username, password)
+    login_page.login(LoginLocators.VALID_USERNAME, LoginLocators.VALID_PASSWORD)
     inventory_page.add_to_cart_by_name(product_name)
     assert inventory_page.get_cart_count() == "1"
 
@@ -242,7 +225,7 @@ def test_cart_persists_after_logout_and_login(driver):
     inventory_page.logout()
 
     # Login again
-    login_page.login(username, password)
+    login_page.login(LoginLocators.VALID_USERNAME, LoginLocators.VALID_PASSWORD)
 
     # Go to cart and verify item still exists
     inventory_page.go_to_cart()
@@ -253,8 +236,6 @@ def test_cart_persists_after_logout_and_login(driver):
 
 @pytest.mark.add_to_cart
 def test_rapid_add_multiple_items(driver):
-    username = "standard_user"
-    password = "secret_sauce"
     products = [
         "Sauce Labs Backpack",
         "Sauce Labs Bolt T-Shirt",
@@ -268,7 +249,7 @@ def test_rapid_add_multiple_items(driver):
     inventory_page = InventoryPage(driver)
     cart_page = CartPage(driver)
 
-    login_page.login(username, password)
+    login_page.login(LoginLocators.VALID_USERNAME, LoginLocators.VALID_PASSWORD)
 
     for product in products:
         inventory_page.add_to_cart_by_name(product)

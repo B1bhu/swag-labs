@@ -1,0 +1,31 @@
+# Python artifacts
+*.pyc
+__pycache__/
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# IDE-specific
+.vscode/
+.idea/
+
+# Test results or temp files
+*.log
+*.tmp
+
+# Dependencies
+*.egg-info/
+dist/
+build/
+
+# Coverage
+htmlcov/
+.coverage
+.cache/
