@@ -114,3 +114,6 @@ class InventoryPage(BasePage):
             ).text
         except:
             return None
+
+    def is_at_inventory_url(self):
+        return self.driver.current_url == "https://www.saucedemo.com/inventory.html"

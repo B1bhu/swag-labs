@@ -263,3 +263,5 @@ def test_rapid_add_multiple_items(driver):
     for product in products:
         assert product in cart_items, f"{product} missing in cart"
 
+
+

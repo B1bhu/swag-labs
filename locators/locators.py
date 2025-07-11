@@ -29,3 +29,10 @@ class LoginLocators:
     LOGIN_BUTTON = (By.ID, "login-button")
     VALID_USERNAME ="standard_user"
     VALID_PASSWORD = "secret_sauce"
+
+class MenuLocators:
+    MENU_BUTTON = (By.ID, "react-burger-menu-btn")
+    ALL_ITEMS = (By.ID, "inventory_sidebar_link")
+    ABOUT = (By.ID, "about_sidebar_link")
+    LOGOUT = (By.ID, "logout_sidebar_link")
+    RESET_STATE = (By.ID, "reset_sidebar_link")
